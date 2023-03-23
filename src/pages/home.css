@@ -1,0 +1,14 @@
+.createButton {
+    margin-top: 10px;
+    border-radius: 3em;
+    float: right;/* No se hacia */
+    right: 0px;
+}
+
+.reminderCardCollection{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    margin-top: 4em;
+    column-gap: 3em;
+    row-gap:  3em;
+}
