@@ -1,0 +1,12 @@
+[
+  {
+    "name": "reminder 1",
+    "author": "User 1",
+    "items": ["llaves", "cartera"]
+  },
+  {
+    "name": "reminder 2",
+    "author": "User 1",
+    "items": ["movil", "coche"]
+  }
+]
