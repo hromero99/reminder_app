@@ -5,6 +5,8 @@ import { ReminderCard } from "../components/ReminderCard";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { readReminderLocalStorage } from "../data/localStorage";
+
 import {
   createMultipleReminders,
   getAllReminders,
@@ -39,11 +41,11 @@ export const HomePage = () => {
   } else if (reminderStatus === "fulfilled") {
     if (reminderData !== undefined) {
       content = [];
+      console.log(reminderData);
       reminderData.forEach((reminder) => {
-        const reminderIndividualData = { name: reminder.title };
         content.push(
           <>
-            <ReminderCard reminder={reminderIndividualData} />
+            <ReminderCard reminder={reminder} />
           </>
         );
       });

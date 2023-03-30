@@ -1,50 +1,73 @@
+import { createElement, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createReminder } from "../features/reminders/remindersSlice";
-
+import { createReminderInLocalStorage } from "../data/localStorage";
 export const CreateReminderForm = () => {
   const dispatch = useDispatch();
   const navigator = useNavigate();
-
+  const [itemsInReminderFields, setItemsInReminderFields] = useState([]);
   const createReminderFormSubmitHandler = (event) => {
     event.preventDefault();
     const reminderName = event.target.name.value;
-    const reminderObj = { title: reminderName };
-    const localStorageReminders = localStorage.getItem("reminders");
-    // Es el primer reminder que guardamos dentro del localstorage
-    if (localStorageReminders == null) {
-      // convertimos a Json un objeto que tendra la siguiente estructura
-      /*
-        {
-          data: [{name: 1}, {name:2}]
-        }
-      */
-      // Donde cada elemento entre {} es un reminder creado por el usuario
-      let newReminderObjectInString = JSON.stringify({
-        data: [reminderObj],
-      });
-      localStorage.setItem("reminders", newReminderObjectInString);
-    } else {
-      // Leemos el localstorage, lo ponemos como objeto con el JSON.parse y actualizamos
-      let remindersInLocalStorageJsonFormat = JSON.parse(localStorageReminders);
-      remindersInLocalStorageJsonFormat.data.push(reminderObj);
-      localStorage.setItem(
-        "reminders",
-        JSON.stringify(remindersInLocalStorageJsonFormat)
-      );
-    }
-    // Tiene que ser title porque el objeto que devuelve la api es de libros y tiene title no name
-    // Luego en el componente de HomePage lo que hacemos es coger el title
+    const inputElements = document.querySelectorAll("input");
+    let reminderElements = [];
+    inputElements.forEach((input) => {
+      if (input.id != "name") {
+        reminderElements.push(input.value);
+      }
+    });
+    const reminderObj = {
+      title: reminderName,
+      elements: reminderElements,
+      fav: false,
+    };
+    dispatch(createReminder(reminderObj));
+    createReminderInLocalStorage(reminderObj);
+    console.log(reminderElements);
     navigator("/");
+  };
+  const handleChange = (e) => {
+    e.preventDefault();
+
+    const index = e.target.id;
+    setItemsInReminderFields((s) => {
+      const newArr = s.slice();
+      newArr[index].value = e.target.value;
+      return newArr;
+    });
+  };
+
+  const addItemToFormButtonHandler = () => {
+    setItemsInReminderFields([
+      ...itemsInReminderFields,
+      {
+        type: "text",
+        value: "",
+      },
+    ]);
   };
 
   return (
-    <form method="POST" onSubmit={createReminderFormSubmitHandler}>
-      <div style={{ display: "flex", flexDirection: "column" }}>
-        <label htmlFor="name">Nombre del recordatorio</label>
-        <input type="text" id="name" name="name" required="required" />
-        <button>Agregar recordatorio</button>
-      </div>
-    </form>
+    <>
+      <button onClick={addItemToFormButtonHandler}>+</button>
+      <form method="POST" onSubmit={createReminderFormSubmitHandler}>
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <label htmlFor="name">Nombre del recordatorio</label>
+          <input type="text" id="name" name="name" required="required" />
+          {itemsInReminderFields.map((item, i) => {
+            return (
+              <input
+                value={item.value}
+                onChange={handleChange}
+                id={i}
+                type={item.type}
+              />
+            );
+          })}
+          <button id="submitButton">Agregar recordatorio</button>
+        </div>
+      </form>
+    </>
   );
 };
