@@ -1,3 +1,5 @@
+import { useDispatch } from "react-redux";
+import { toggleReminderAsFav } from "../features/reminders/remindersSlice";
 import {
   createReminderInLocalStorage,
   readReminderLocalStorage,
@@ -8,17 +10,29 @@ import {
 import "./ReminderCard.css";
 
 export const ReminderCard = (props) => {
+  const dispatch = useDispatch();
+  let cardClass = "reminderCard";
+
   const favButtonClickHandler = () => {
-    console.log("BUTTON FAV");
-    if (checkIfExistsReminder(props.reminder)) {
-      console.log("DELETEEEE");
-      deleteReminderLocalStorage(props.reminder);
+    dispatch(toggleReminderAsFav(props.reminder));
+    let reminderTogleValue = !props.reminder.fav;
+    if (reminderTogleValue) {
+      cardClass = "reminderFavCard";
+      console.log("FAV");
+      console.log(props.reminder);
+      createReminderInLocalStorage(props.reminder);
     } else {
-      createReminderInLocalStorage();
+      cardClass = "reminderCard";
+      deleteReminderLocalStorage(props.reminder);
     }
   };
+
+  if (props.reminder.fav) {
+    cardClass = "reminderFavCard";
+  }
+
   return (
-    <div className="reminderCard">
+    <div className={cardClass}>
       <h1>{props.reminder.title}</h1>
       <button onClick={favButtonClickHandler}>Fav</button>
     </div>

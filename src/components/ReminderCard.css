@@ -1,5 +1,10 @@
 .reminderCard {
-    background-color:  rgb(205, 147, 166);
-    border-radius: 1em;
-    text-align: center;
+  background-color: rgb(205, 147, 166);
+  border-radius: 1em;
+  text-align: center;
+}
+.reminderFavCard {
+  background-color: blue;
+  border-radius: 1em;
+  text-align: center;
 }

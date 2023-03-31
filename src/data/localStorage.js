@@ -9,6 +9,15 @@ export const createReminderInLocalStorage = (reminderObj) => {
       reminderLocalStorageObject
     );
     localStorage.setItem("reminders", reminderLocalStorageUpdatedEncoded);
+  } else {
+    let objectStoraLocalStorage = {
+      data: [],
+    };
+    objectStoraLocalStorage.data.push(reminderObj);
+    let reminderLocalStorageUpdatedEncoded = JSON.stringify(
+      objectStoraLocalStorage
+    );
+    localStorage.setItem("reminders", reminderLocalStorageUpdatedEncoded);
   }
 };
 export const readReminderLocalStorage = () => {
@@ -45,7 +54,7 @@ export const deleteReminderLocalStorage = (reminderObj) => {
         index,
         1
       );
-      console.log(" UPDATA");
+      console.log("UPDATA");
       console.log(reminderLocalStorageObject);
 
       const reminderLocalStorageUpdatedEncoded = JSON.stringify(
