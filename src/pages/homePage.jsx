@@ -20,7 +20,6 @@ export const HomePage = () => {
   const reminderData = useSelector(getAllReminders);
   const reminderStatus = useSelector(getReminderStatus);
   const reminderError = useSelector(getReminderError);
-
   // Para que se ejecute antes de que se
   // renderice el componente y lo redirija solo
   useEffect(() => {

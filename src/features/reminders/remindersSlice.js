@@ -61,7 +61,6 @@ export const reminderSlice = createSlice({
 export const getAllReminders = (state) => state.reminder.data;
 export const getReminderError = (state) => state.reminder.error;
 export const getReminderStatus = (state) => state.reminder.status;
-
 export const {
   createReminder,
   createMultipleReminders,
